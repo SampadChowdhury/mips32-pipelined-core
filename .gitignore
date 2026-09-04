@@ -1,0 +1,16 @@
+# Simulation outputs
+*.vvp
+*.vcd
+*.log
+
+# Synthesis outputs
+WORK/
+reports/
+*.ddc
+*.sdc
+*.db
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store

@@ -1,0 +1,20 @@
+2008000a // addi   $t0, $zero, 10
+20090014 // addi   $t1, $zero, 20
+01095020 // add    $t2, $t0, $t1       -> 30 (forwarding)
+ac0a0000 // sw     $t2, 0($zero)        -> memory[0] = 30
+8c0b0000 // lw     $t3, 0($zero)        -> 30
+01686020 // add    $t4, $t3, $t0       -> 40 (load-use interlock)
+01098008 // muladd $s0, $t0, $t1       -> 10*20+20 = 220
+02088820 // add    $s1, $s0, $t0       -> 230 (MULADD forwarding)
+12310002 // beq    $s1, $s1, +2         -> taken
+20120063 // addi   $s2, $zero, 99       -> flushed
+20120058 // addi   $s2, $zero, 88       -> flushed
+0000b00f // perfmon $s6, cycle counter
+0000b84f // perfmon $s7, retired counter
+ac100004 // sw     $s0, 4($zero)
+ac110008 // sw     $s1, 8($zero)
+ac0c000c // sw     $t4, 12($zero)
+ac120010 // sw     $s2, 16($zero)       -> remains 0 after branch flush
+ac160014 // sw     $s6, 20($zero)
+ac170018 // sw     $s7, 24($zero)
+08000013 // j      19                   -> loop here

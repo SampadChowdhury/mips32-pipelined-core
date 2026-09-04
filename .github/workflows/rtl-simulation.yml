@@ -1,0 +1,24 @@
+name: RTL simulation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+
+      - name: Compile and run processor test
+        run: |
+          iverilog -g2012 -s mips32_pipeline_tb \
+            -o processor.vvp rtl/*.sv tb/mips32_pipeline_tb.sv
+          vvp processor.vvp

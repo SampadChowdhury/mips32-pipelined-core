@@ -193,7 +193,9 @@ module mips32_pipeline_core (
         .forward_b_e(forward_b_e)
     );
 
-    always_comb begin
+    // Plain combinational block keeps compatibility with Icarus releases that
+    // conservatively warn about packed-struct member selects in always_comb.
+    always @* begin
         case (forward_a_e)
             2'b10: forwarded_a_e = ex_mem.alu_result;
             2'b01: forwarded_a_e = writeback_result;

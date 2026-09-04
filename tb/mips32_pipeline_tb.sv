@@ -31,7 +31,7 @@ module mips32_pipeline_tb;
     initial begin
         for (imem_index = 0; imem_index < 64; imem_index = imem_index + 1)
             instruction_memory[imem_index] = 32'b0;
-        $readmemh("programs/demo.hex", instruction_memory);
+        $readmemh("programs/demo.hex", instruction_memory, 0, 19);
     end
 
     initial begin
@@ -39,7 +39,8 @@ module mips32_pipeline_tb;
         forever #5 clk = ~clk;
     end
 
-    always_ff @(posedge clk) begin
+    // This is testbench stimulus/checking logic, not synthesizable design RTL.
+    always @(posedge clk) begin
         if (reset) begin
             for (dmem_index = 0; dmem_index < 64; dmem_index = dmem_index + 1)
                 data_memory[dmem_index] <= 32'b0;
